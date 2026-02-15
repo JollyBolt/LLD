@@ -31,7 +31,7 @@ classDiagram
     class NotificationFactory {
         +createNotification(String type) Notification$
     }
-    Notification <|.. EmailNotification
-    Notification <|.. SmsNotification
+    Notification <|.. EmailNotification : Implements
+    Notification <|.. SmsNotification : Implements
     NotificationFactory ..> Notification : creates
 ```
