@@ -58,3 +58,28 @@ classDiagram
     ModernFactory ..> ModernChair : Creates
     VictorianFactory ..> VictorianChair : Creates
 ```
+
+### 4. Builder Pattern
+
+```mermaid
+classDiagram
+    class User {
+        -String firstName
+        -String lastName
+        -int age
+        -String phone
+        -User(UserBuilder builder)
+    }
+    class UserBuilder {
+        -String firstName
+        -String lastName
+        -int age
+        -String phone
+        +UserBuilder(firstName, lastName)
+        +setAge(age) UserBuilder
+        +setPhone(phone) UserBuilder
+        +build() User
+    }
+    User +-- UserBuilder : Inner Class
+    UserBuilder ..> User : Creates
+```
