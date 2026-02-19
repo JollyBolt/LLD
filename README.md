@@ -35,3 +35,26 @@ classDiagram
     Notification <|.. SmsNotification : Implements
     NotificationFactory ..> Notification : creates
 ```
+### 3. Absolute Factory Pattern
+
+```mermaid
+classDiagram
+    class FurnitureFactory {
+        <<interface>>
+        +createChair() Chair
+        +createSofa() Sofa
+    }
+    class ModernFactory {
+        +createChair()
+        +createSofa()
+    }
+    class VictorianFactory {
+        +createChair()
+        +createSofa()
+    }
+    
+    FurnitureFactory <|.. ModernFactory
+    FurnitureFactory <|.. VictorianFactory
+    ModernFactory ..> ModernChair : Creates
+    VictorianFactory ..> VictorianChair : Creates
+```
