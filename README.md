@@ -83,3 +83,21 @@ classDiagram
     User +-- UserBuilder : Inner Class
     UserBuilder ..> User : Creates
 ```
+
+### 5. Prototype Pattern
+**Intent:** It allows you to create a new object by cloning an existing prototype and modifying only what's necessary.
+
+```mermaid
+classDiagram
+    class Prototype {
+        <<interface>>
+        +clone() Prototype
+    }
+    class GameCharacter {
+        -String name
+        -String weapon
+        -int health
+        +clone() Prototype
+    }
+    Prototype <|.. GameCharacter
+```
