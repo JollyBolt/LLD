@@ -80,7 +80,8 @@ classDiagram
         +setPhone(phone) UserBuilder
         +build() User
     }
-    User +-- UserBuilder : Inner Class
+    %% Use *-- for nested/inner class relationship
+    User *-- UserBuilder : Defines
     UserBuilder ..> User : Creates
 ```
 
