@@ -125,3 +125,41 @@ classDiagram
     WeightSensor <|.. WeightAdapter : Implements
     WeightAdapter --> LegacyPoundSensor : Wraps/Adapts
 ```
+
+### 2. Bridge Pattern
+**Intent:** Decouple an abstraction from its implementation so that the two  can vary independently.
+
+```mermaid
+classDiagram
+    class Device {
+        <<interface>>
+        +isEnabled() boolean
+        +enable()
+        +disable()
+        +setVolume(percent)
+    }
+    class TV {
+        -boolean on
+        -int volume
+    }
+    class Radio {
+        -boolean on
+        -int volume
+    }
+
+    class RemoteControl {
+        #Device device
+        +togglePower()
+    }
+    class AdvancedRemote {
+        +mute()
+    }
+
+    Device <|.. TV : Implements
+    Device <|.. Radio : Implements
+    
+    RemoteControl <|-- AdvancedRemote : Extends
+    
+    %% The Bridge (Composition)
+    RemoteControl o-- Device : Bridge (Has-A)
+```
