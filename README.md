@@ -102,3 +102,26 @@ classDiagram
     }
     Prototype <|.. GameCharacter
 ```
+
+## Structural Patterns
+
+### 1. Adapter Pattern
+**Intent:** Convert the interface of a class into another interface clients expect.
+
+```mermaid
+classDiagram
+    class WeightSensor {
+        <<interface>>
+        +getWeightInKilos() double
+    }
+    class LegacyPoundSensor {
+        +getWeightInPounds() double
+    }
+    class WeightAdapter {
+        -LegacyPoundSensor legacySensor
+        +getWeightInKilos() double
+    }
+
+    WeightSensor <|.. WeightAdapter : Implements
+    WeightAdapter --> LegacyPoundSensor : Wraps/Adapts
+```
