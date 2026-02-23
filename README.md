@@ -163,3 +163,35 @@ classDiagram
     %% The Bridge (Composition)
     RemoteControl o-- Device : Bridge (Has-A)
 ```
+
+### 3. Composite Pattern
+**Intent:** Compose objects into tree structures to represent part-whole hierarchies. Lets clients treat individual objects and compositions uniformly.
+
+```mermaid
+classDiagram
+    class FileSystemComponent {
+        <<interface>>
+        +getSize() int
+        +showDetails()
+    }
+    class File {
+        -String name
+        -int size
+        +getSize() int
+        +showDetails()
+    }
+    class Directory {
+        -String name
+        -List~FileSystemComponent~ children
+        +addComponent(Component)
+        +removeComponent(Component)
+        +getSize() int
+        +showDetails()
+    }
+
+    FileSystemComponent <|.. File : Implements
+    FileSystemComponent <|.. Directory : Implements
+    
+    %% The Composite aggregation (Directory contains Components)
+    Directory o-- FileSystemComponent : contains
+```
