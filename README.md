@@ -195,3 +195,42 @@ classDiagram
     %% The Composite aggregation (Directory contains Components)
     Directory o-- FileSystemComponent : contains
 ```
+
+### 4. Decorator Pattern
+**Intent:** Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
+
+```mermaid
+classDiagram
+    class Pizza {
+        <<interface>>
+        +getDescription() String
+        +getCost() int
+    }
+    class Margherita {
+        +getDescription() String
+        +getCost() int
+    }
+    class ToppingDecorator {
+        <<abstract>>
+        #Pizza pizzaWrapper
+        +getDescription() String
+        +getCost() int
+    }
+    class ExtraCheese {
+        +getDescription() String
+        +getCost() int
+    }
+    class Jalapeno {
+        +getDescription() String
+        +getCost() int
+    }
+
+    Pizza <|.. Margherita : Implements
+    Pizza <|.. ToppingDecorator : Implements
+    
+    %% The Decorator both IS A Pizza and HAS A Pizza
+    ToppingDecorator o-- Pizza : Wraps
+    
+    ToppingDecorator <|-- ExtraCheese : Extends
+    ToppingDecorator <|-- Jalapeno : Extends
+```
