@@ -1,5 +1,3 @@
-Got it! You want the Decorator.java file updated so that the complete, formal problem statement is baked right into the header comments, just like we did for the Facade. This makes the file a standalone study guide.
-
 /**
  * PROBLEM STATEMENT: Dynamic Pizza Ordering System
  * * * Background:
