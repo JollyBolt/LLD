@@ -234,3 +234,47 @@ classDiagram
     ToppingDecorator <|-- ExtraCheese : Extends
     ToppingDecorator <|-- Jalapeno : Extends
 ```
+
+### 5. Facade Pattern
+**Intent:** Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.
+
+```mermaid
+classDiagram
+    class Client {
+    }
+    class HomeTheaterFacade {
+        -Projector projector
+        -SoundSystem soundSystem
+        -Lights lights
+        -DvdPlayer dvdPlayer
+        +watchMovie(movie)
+        +endMovie()
+    }
+    class Projector {
+        +on()
+        +off()
+    }
+    class SoundSystem {
+        +on()
+        +setVolume()
+        +off()
+    }
+    class Lights {
+        +dim()
+        +on()
+    }
+    class DvdPlayer {
+        +play()
+        +stop()
+        +off()
+    }
+
+    %% Client ONLY talks to the Facade
+    Client --> HomeTheaterFacade : Uses
+    
+    %% Facade handles the complex subsystem
+    HomeTheaterFacade --> Projector
+    HomeTheaterFacade --> SoundSystem
+    HomeTheaterFacade --> Lights
+    HomeTheaterFacade --> DvdPlayer
+```
