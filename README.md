@@ -278,3 +278,33 @@ classDiagram
     HomeTheaterFacade --> Lights
     HomeTheaterFacade --> DvdPlayer
 ```
+
+### 6. Proxy Pattern
+**Intent:** Provide a surrogate or placeholder for another object to control access to it.
+
+```mermaid
+classDiagram
+    class TranscriptionService {
+        <<interface>>
+        +transcribe(audioId) String
+    }
+    class GrpcTranscriptionBackend {
+        +transcribe(audioId) String
+    }
+    class TranscriptionProxy {
+        -GrpcTranscriptionBackend realBackend
+        -Map cache
+        +transcribe(audioId) String
+    }
+    class Client {
+    }
+
+    TranscriptionService <|.. GrpcTranscriptionBackend : Implements
+    TranscriptionService <|.. TranscriptionProxy : Implements
+    
+    %% The Proxy holds a reference to the Real Subject
+    TranscriptionProxy o-- GrpcTranscriptionBackend : Controls Access
+    
+    %% Client only talks to the interface
+    Client --> TranscriptionService : Uses
+```
