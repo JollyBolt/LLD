@@ -308,3 +308,37 @@ classDiagram
     %% Client only talks to the interface
     Client --> TranscriptionService : Uses
 ```
+
+### 7. Flyweight Pattern
+**Intent:** Use sharing to support large numbers of fine-grained objects efficiently.
+
+```mermaid
+classDiagram
+    class TreeFactory {
+        <<static>>
+        -Map~String, TreeSpecies~ treeTypes
+        +getTreeSpecies(name, color, texture) TreeSpecies
+    }
+    class TreeSpecies {
+        -String name
+        -String color
+        -String heavyMeshAndTexture
+        +draw(x, y)
+    }
+    class Tree {
+        -int x
+        -int y
+        -TreeSpecies species
+        +draw()
+    }
+    class Forest {
+        -List~Tree~ trees
+        +plantTree(x, y, name, color, texture)
+        +draw()
+    }
+
+    %% Relationships
+    TreeFactory o-- TreeSpecies : Caches (Intrinsic State)
+    Tree --> TreeSpecies : Refers to
+    Forest *-- Tree : Contains (Extrinsic State)
+```
