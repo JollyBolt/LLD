@@ -342,3 +342,41 @@ classDiagram
     Tree --> TreeSpecies : Refers to
     Forest *-- Tree : Contains (Extrinsic State)
 ```
+
+## Behavioral Patterns
+
+### 1. Chain of Responsibility Pattern
+**Intent:** Pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process it or to pass it to the next handler.
+
+```mermaid
+classDiagram
+    class Server {
+        -Middleware middleware
+        +setMiddleware(Middleware)
+        +logIn(email, password, ip) boolean
+    }
+    class Middleware {
+        <<abstract>>
+        -Middleware next
+        +linkWith(next) Middleware
+        +check(email, password, ip)* boolean
+        #checkNext(email, password, ip) boolean
+    }
+    class ThrottlingMiddleware {
+        +check(email, password, ip) boolean
+    }
+    class UserExistsMiddleware {
+        +check(email, password, ip) boolean
+    }
+    class RoleCheckMiddleware {
+        +check(email, password, ip) boolean
+    }
+
+    Server o-- Middleware : Uses
+    %% The chain linkage
+    Middleware --> Middleware : next
+    
+    Middleware <|-- ThrottlingMiddleware : Extends
+    Middleware <|-- UserExistsMiddleware : Extends
+    Middleware <|-- RoleCheckMiddleware : Extends
+```
