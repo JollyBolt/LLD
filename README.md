@@ -380,3 +380,36 @@ classDiagram
     Middleware <|-- UserExistsMiddleware : Extends
     Middleware <|-- RoleCheckMiddleware : Extends
 ```
+
+### 1. Command Pattern
+**Intent:** Encapsulate a request as an object, allowing you to parameterize clients, queue or log requests, and support undoable operations.
+
+```mermaid
+classDiagram
+    class CommandHistoryManager {
+        -Stack~EditorCommand~ history
+        +executeCommand(EditorCommand)
+        +undoLast()
+    }
+    class EditorCommand {
+        <<interface>>
+        +execute()
+        +undo()
+    }
+    class WriteCommand {
+        -TextDocument document
+        -String textToWrite
+        +execute()
+        +undo()
+    }
+    class TextDocument {
+        -StringBuilder content
+        +insert(index, text)
+        +delete(index, length)
+    }
+
+    %% Relationships
+    CommandHistoryManager o-- EditorCommand : Manages
+    EditorCommand <|.. WriteCommand : Implements
+    WriteCommand --> TextDocument : Modifies (Receiver)
+```
