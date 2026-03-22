@@ -381,7 +381,7 @@ classDiagram
     Middleware <|-- RoleCheckMiddleware : Extends
 ```
 
-### 1. Command Pattern
+### 2. Command Pattern
 **Intent:** Encapsulate a request as an object, allowing you to parameterize clients, queue or log requests, and support undoable operations.
 
 ```mermaid
@@ -412,4 +412,44 @@ classDiagram
     CommandHistoryManager o-- EditorCommand : Manages
     EditorCommand <|.. WriteCommand : Implements
     WriteCommand --> TextDocument : Modifies (Receiver)
+```
+
+### 3. Observer Pattern
+**Intent:** Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
+
+```mermaid
+classDiagram
+    class Subject {
+        <<interface>>
+        +attach(Observer)
+        +detach(Observer)
+        +notifyObservers()
+    }
+    class Observer {
+        <<interface>>
+        +update(stockSymbol, price)
+    }
+    class StockExchange {
+        -List~Observer~ observers
+        -Map stockPrices
+        +attach(Observer)
+        +detach(Observer)
+        +notifyObservers()
+        +setStockPrice(stockSymbol, price)
+    }
+    class MobileApp {
+        -String username
+        +update(stockSymbol, price)
+    }
+    class SmsAlertSystem {
+        -double alertThreshold
+        +update(stockSymbol, price)
+    }
+
+    Subject <|.. StockExchange : Implements
+    Observer <|.. MobileApp : Implements
+    Observer <|.. SmsAlertSystem : Implements
+    
+    %% The critical 1-to-N mapping
+    StockExchange o-- Observer : Maintains List
 ```
