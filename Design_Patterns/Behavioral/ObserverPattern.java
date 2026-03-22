@@ -8,7 +8,7 @@
  * 3. 1-to-N Broadcast: One state change alerts multiple independent listeners.
  * * --------------------------------------------------------------------------
  * LLD: OBSERVER PATTERN (Publish-Subscribe)
- * * CORE INTENT: Define a one-to-many dependency between objects so that when 
+ * * CORE INTENT: Define a one-to-many dependency between objects so that when
  * one object changes state, all its dependents are notified and updated automatically.
  * * KEY POINTERS:
  * 1. Subject (Publisher): Maintains the list of listeners and sends notifications.
@@ -119,3 +119,72 @@ public class ObserverPattern {
         nyse.setStockPrice("AAPL", 155.00);
     }
 }
+
+/*
+Weak Reference Code implementation:
+
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+class SafeStockExchange implements Subject {
+    // We wrap our Observers in WeakReferences
+    private List<WeakReference<Observer>> observers = new ArrayList<>();
+
+    @Override
+    public void attach(Observer o) {
+        // Wrap the incoming observer before storing it
+        observers.add(new WeakReference<>(o));
+        System.out.println("[SYSTEM] New observer attached safely.");
+    }
+
+    @Override
+    public void detach(Observer o) {
+        // Manual detachment is still good practice, but no longer strictly
+        // required to prevent a catastrophic memory leak.
+        Iterator<WeakReference<Observer>> iterator = observers.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Observer> weakRef = iterator.next();
+            Observer storedObserver = weakRef.get(); // Unwrap it
+
+            // If the unwrapped object is the one we want to remove, drop it
+            if (storedObserver == o) {
+                iterator.remove();
+                System.out.println("[SYSTEM] Observer manually detached.");
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void notifyObservers(String stockSymbol, double price) {
+        // We MUST use an Iterator here. If we use a standard for-loop and try to
+        // remove items while looping, Java will throw a ConcurrentModificationException.
+        Iterator<WeakReference<Observer>> iterator = observers.iterator();
+
+        while (iterator.hasNext()) {
+            WeakReference<Observer> weakRef = iterator.next();
+
+            // .get() returns the real object if it exists, or NULL if the GC destroyed it
+            Observer realObserver = weakRef.get();
+
+            if (realObserver != null) {
+                // The object is still alive! Send the update.
+                realObserver.update(stockSymbol, price);
+            } else {
+                // The object was destroyed by the Garbage Collector!
+                // The weakRef is now an empty shell. We must clean it up.
+                System.out.println("[SYSTEM] Detected dead observer. Sweeping from list...");
+                iterator.remove();
+            }
+        }
+    }
+
+    public void setStockPrice(String stockSymbol, double price) {
+        System.out.println("\n[EXCHANGE] *** " + stockSymbol + " price updated to $" + price + " ***");
+        notifyObservers(stockSymbol, price);
+    }
+}
+ */
