@@ -454,7 +454,7 @@ classDiagram
     StockExchange o-- Observer : Maintains List
 ```
 
-### 3. Strategy Pattern
+### 4. Strategy Pattern
 **Intent:** Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently of clients that use it.
 
 ```mermaid
@@ -485,4 +485,50 @@ classDiagram
     TranscriptionStrategy <|.. FasterWhisperCloudStrategy : Implements
     TranscriptionStrategy <|.. OnDeviceModelStrategy : Implements
     TranscriptionStrategy <|.. FallbackApiStrategy : Implements
+```
+
+### 5. State Pattern
+**Intent:** Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.
+
+```mermaid
+classDiagram
+    class MediaPlayer {
+        -State state
+        +changeState(State)
+        +clickLock()
+        +clickPlay()
+        +clickNext()
+    }
+    class State {
+        <<abstract>>
+        #MediaPlayer player
+        +clickLock()*
+        +clickPlay()*
+        +clickNext()*
+    }
+    class LockedState {
+        +clickLock()
+        +clickPlay()
+        +clickNext()
+    }
+    class ReadyState {
+        +clickLock()
+        +clickPlay()
+        +clickNext()
+    }
+    class PlayingState {
+        +clickLock()
+        +clickPlay()
+        +clickNext()
+    }
+
+    %% Context delegates to State
+    MediaPlayer o-- State : Delegates
+    
+    %% State transitions the Context
+    State --> MediaPlayer : Back-reference
+    
+    State <|-- LockedState : Extends
+    State <|-- ReadyState : Extends
+    State <|-- PlayingState : Extends
 ```
