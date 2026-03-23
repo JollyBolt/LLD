@@ -532,3 +532,32 @@ classDiagram
     State <|-- ReadyState : Extends
     State <|-- PlayingState : Extends
 ```
+
+### 6. Template Pattern
+**Intent:** Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.
+
+```mermaid
+classDiagram
+    class OtaUpdatePipeline {
+        <<abstract>>
+        +executeUpdate()* final
+        #fetchUpdatePackage()*
+        -verifyChecksum()
+        #onBeforeFlash()
+        #flashPartitions()*
+        -rebootDevice()
+    }
+    class WiFiSeamlessUpdate {
+        +fetchUpdatePackage()
+        +flashPartitions()
+        +onBeforeFlash()
+    }
+    class UsbRecoveryUpdate {
+        +fetchUpdatePackage()
+        +flashPartitions()
+    }
+
+    %% Subclasses implement the abstract methods required by the template
+    OtaUpdatePipeline <|-- WiFiSeamlessUpdate : Extends
+    OtaUpdatePipeline <|-- UsbRecoveryUpdate : Extends
+```
