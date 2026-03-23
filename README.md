@@ -453,3 +453,36 @@ classDiagram
     %% The critical 1-to-N mapping
     StockExchange o-- Observer : Maintains List
 ```
+
+### 3. Strategy Pattern
+**Intent:** Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently of clients that use it.
+
+```mermaid
+classDiagram
+    class AudioTranscriptionController {
+        -TranscriptionStrategy strategy
+        +setStrategy(TranscriptionStrategy)
+        +processAudio(audioFileName)
+    }
+    class TranscriptionStrategy {
+        <<interface>>
+        +transcribe(audioFileName) String
+    }
+    class FasterWhisperCloudStrategy {
+        +transcribe(audioFileName) String
+    }
+    class OnDeviceModelStrategy {
+        +transcribe(audioFileName) String
+    }
+    class FallbackApiStrategy {
+        +transcribe(audioFileName) String
+    }
+
+    %% The Context HAS A Strategy
+    AudioTranscriptionController o-- TranscriptionStrategy : Executes
+    
+    %% The Strategies IMPLEMENT the interface
+    TranscriptionStrategy <|.. FasterWhisperCloudStrategy : Implements
+    TranscriptionStrategy <|.. OnDeviceModelStrategy : Implements
+    TranscriptionStrategy <|.. FallbackApiStrategy : Implements
+```
