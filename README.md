@@ -610,3 +610,35 @@ classDiagram
     BluetoothToggle --> QuickSettingsMediator : Notifies
     AirplaneModeToggle --> QuickSettingsMediator : Notifies
 ```
+
+### 8. Memento Pattern
+**Intent:** Without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later.
+
+```mermaid
+classDiagram
+    class SaveManager {
+        -Stack~GameSave~ saveHistory
+        +saveGame(PlayerCharacter)
+        +loadLastSave(PlayerCharacter)
+    }
+    class PlayerCharacter {
+        -int level
+        -int health
+        -String location
+        +play()
+        +createSave() GameSave
+        +restoreSave(GameSave)
+    }
+    class GameSave {
+        -int level
+        -int health
+        -String location
+        +getLevel()
+        +getHealth()
+        +getLocation()
+    }
+
+    %% Relationships
+    SaveManager o-- GameSave : Stores (Cannot read data)
+    PlayerCharacter ..> GameSave : Creates / Restores
+```
