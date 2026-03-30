@@ -561,3 +561,52 @@ classDiagram
     OtaUpdatePipeline <|-- WiFiSeamlessUpdate : Extends
     OtaUpdatePipeline <|-- UsbRecoveryUpdate : Extends
 ```
+
+### 7. Mediator Pattern
+**Intent:** Define an object that encapsulates how a set of objects interact. Mediator promotes loose coupling by keeping objects from referring to each other explicitly.
+
+```mermaid
+classDiagram
+    class QuickSettingsMediator {
+        <<interface>>
+        +notify(sender, event)
+    }
+    class SystemUIMediator {
+        -WifiToggle wifi
+        -BluetoothToggle bluetooth
+        -AirplaneModeToggle airplaneMode
+        +notify(sender, event)
+    }
+    class Component {
+        <<abstract>>
+        #QuickSettingsMediator mediator
+        +setMediator(mediator)
+    }
+    class WifiToggle {
+        +turnOn()
+        +turnOff()
+    }
+    class BluetoothToggle {
+        +turnOn()
+        +turnOff()
+    }
+    class AirplaneModeToggle {
+        +turnOn()
+        +turnOff()
+    }
+
+    %% Inheritance
+    QuickSettingsMediator <|.. SystemUIMediator : Implements
+    Component <|-- WifiToggle : Extends
+    Component <|-- BluetoothToggle : Extends
+    Component <|-- AirplaneModeToggle : Extends
+
+    %% Relationships (The Star Topology)
+    SystemUIMediator --> WifiToggle : Controls
+    SystemUIMediator --> BluetoothToggle : Controls
+    SystemUIMediator --> AirplaneModeToggle : Controls
+    
+    WifiToggle --> QuickSettingsMediator : Notifies
+    BluetoothToggle --> QuickSettingsMediator : Notifies
+    AirplaneModeToggle --> QuickSettingsMediator : Notifies
+```
