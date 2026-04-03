@@ -687,3 +687,50 @@ classDiagram
     %% Double Dispatch Mechanism
     StorageNode ..> StorageVisitor : accept(v) calls v.visit(this)
 ```
+
+### 10. Iterator Pattern
+**Intent:** Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
+
+```mermaid
+classDiagram
+    class Playlist {
+        <<interface>>
+        +createSequentialIterator() TrackIterator
+        +createShuffleIterator() TrackIterator
+    }
+    class MusicPlaylist {
+        -List~MediaTrack~ tracks
+        +addTrack(MediaTrack)
+        +createSequentialIterator() TrackIterator
+        +createShuffleIterator() TrackIterator
+    }
+    
+    class TrackIterator {
+        <<interface>>
+        +hasNext() boolean
+        +next() MediaTrack
+    }
+    class SequentialIterator {
+        -List~MediaTrack~ tracks
+        -int currentPosition
+        +hasNext() boolean
+        +next() MediaTrack
+    }
+    class ShuffleIterator {
+        -List~MediaTrack~ shuffledTracks
+        -int currentPosition
+        +hasNext() boolean
+        +next() MediaTrack
+    }
+
+    %% Inheritance
+    Playlist <|.. MusicPlaylist : Implements
+    TrackIterator <|.. SequentialIterator : Implements
+    TrackIterator <|.. ShuffleIterator : Implements
+
+    %% Relationships
+    MusicPlaylist ..> SequentialIterator : Creates
+    MusicPlaylist ..> ShuffleIterator : Creates
+    SequentialIterator --> MusicPlaylist : Traverses
+    ShuffleIterator --> MusicPlaylist : Traverses
+```
