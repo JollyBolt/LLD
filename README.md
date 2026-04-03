@@ -642,3 +642,48 @@ classDiagram
     SaveManager o-- GameSave : Stores (Cannot read data)
     PlayerCharacter ..> GameSave : Creates / Restores
 ```
+
+### 9. Visitor Pattern
+**Intent:** Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.
+
+```mermaid
+classDiagram
+    class StorageVisitor {
+        <<interface>>
+        +visit(VideoFile)
+        +visit(AudioFile)
+        +visit(DirectoryNode)
+    }
+    class SizeCalculatorVisitor {
+        -int totalSize
+        +visit(VideoFile)
+        +visit(AudioFile)
+        +visit(DirectoryNode)
+    }
+    class MalwareScannerVisitor {
+        +visit(VideoFile)
+        +visit(AudioFile)
+        +visit(DirectoryNode)
+    }
+    
+    class StorageNode {
+        <<interface>>
+        +accept(StorageVisitor)
+    }
+    class VideoFile {
+        +accept(StorageVisitor)
+    }
+    class DirectoryNode {
+        -List~StorageNode~ childrenNodes
+        +accept(StorageVisitor)
+    }
+
+    %% Inheritance
+    StorageVisitor <|.. SizeCalculatorVisitor : Implements
+    StorageVisitor <|.. MalwareScannerVisitor : Implements
+    StorageNode <|.. VideoFile : Implements
+    StorageNode <|.. DirectoryNode : Implements
+
+    %% Double Dispatch Mechanism
+    StorageNode ..> StorageVisitor : accept(v) calls v.visit(this)
+```
